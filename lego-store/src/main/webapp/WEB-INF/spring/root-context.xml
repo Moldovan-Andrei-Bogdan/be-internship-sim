@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util" xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	   http://www.springframework.org/schema/beans/spring-beans.xsd
+	   http://www.springframework.org/schema/context
+	   https://www.springframework.org/schema/context/spring-context.xsd
+	   http://www.springframework.org/schema/util
+	   https://www.springframework.org/schema/util/spring-util.xsd
+	   http://www.springframework.org/schema/mvc
+	   https://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <context:component-scan base-package="com.mecorp"/>
+
+    <context:property-placeholder location="classpath:application.properties"/>
+
+    <mvc:annotation-driven/>
+    <!--DTO-->
+
+    <!--ENTITY-->
+
+    <!--POPULATORS-->
+
+    <!--CONVERTERS-->
+
+    <!--REPOSITORY-->
+
+    <!--SERVICE-->
+
+
+    <!-- DATABASE-->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${jdbc.driverClassName}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+    <bean id="sessionFactory"
+          class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="packagesToScan" value="com.mecorp.model"/>
+        <property name="hibernateProperties" ref="properties"/>
+    </bean>
+
+    <util:map id="properties" map-class="java.util.Properties" key-type="java.lang.String"
+              value-type="java.lang.String">
+        <entry key="hibernate.dialect" value="${hibernate.dialect}"/>
+        <entry key="hibernate.show_sql" value="${hibernate.show_sql}"/>
+        <entry key="hibernate.format_sql" value="${hibernate.format_sql}"/>
+        <entry key="hibernate.hbm2ddl.auto" value="${hibernate.hbm2ddl.auto}"/>
+    </util:map>
+
+    <bean id="transactionManager"
+          class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <tx:annotation-driven transaction-manager="transactionManager" />
+
+</beans>
