@@ -32,28 +32,34 @@ public class DefaultAbstractRepository<ENTITY, PK extends Serializable> implemen
     }
 
     @Override
-    public Optional<ENTITY> findById(PK id, boolean allowCommit) {
+    public Optional<ENTITY> findById(PK id) {
         return Optional.ofNullable(this.getSession().find(this.persistentClass, id));
     }
 
     @Override
-    public Optional<ENTITY> save(ENTITY entity, boolean allowCommit) {
+    public Optional<ENTITY> save(ENTITY entity) {
         this.getSession().persist(entity);
         return Optional.of(entity);
     }
 
     @Override
-    public void delete(ENTITY entity, boolean allowTransactionActions) {
+    public boolean delete(ENTITY entity) {
+        this.getSession().remove(entity);
+
+        return true;
     }
 
     @Override
-    public Optional<ENTITY> update(ENTITY entity, boolean allowTransactionActions) {
+    public Optional<ENTITY> update(ENTITY entity) {
         return Optional.empty();
     }
 
     @Override
-    public Optional<ENTITY> deleteById(PK id, boolean allowTransactionActions) {
-        return Optional.empty();
+    public boolean deleteById(PK id) {
+        final Optional<ENTITY> entityOptional = this.findById(id);
+
+        return entityOptional.filter(this::delete).isPresent();
+
     }
 
     protected Session getSession() {

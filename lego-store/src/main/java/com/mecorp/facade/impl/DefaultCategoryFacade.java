@@ -48,4 +48,9 @@ public class DefaultCategoryFacade implements CategoryFacade {
     public Optional<CategoryDto> findById(Long id) {
         return this.categoryService.findById(id).map(this.basicCategoryConverter::convert);
     }
+
+    @Override
+    public boolean deleteById(Long id) {
+        return this.categoryService.deleteById(id);
+    }
 }

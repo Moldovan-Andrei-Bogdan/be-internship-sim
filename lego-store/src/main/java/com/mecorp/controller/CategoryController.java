@@ -43,4 +43,13 @@ public class CategoryController {
 
         return response.get();
     }
+
+    @DeleteMapping("{id}")
+    public void delete(@PathVariable Long id) {
+        boolean isEntityDeleted = this.categoryFacade.deleteById(id);
+
+        if (!isEntityDeleted) {
+            throw new NotFoundException("No category with this id has been found");
+        }
+    }
 }
