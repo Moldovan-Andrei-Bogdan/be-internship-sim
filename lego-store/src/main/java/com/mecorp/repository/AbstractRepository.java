@@ -7,13 +7,13 @@ import java.util.Optional;
 public interface AbstractRepository<ENTITY, PK extends Serializable> {
     List<ENTITY> findAll();
 
-    Optional<ENTITY> findById(PK id, boolean allowTransactionActions);
+    Optional<ENTITY> findById(PK id);
 
-    Optional<ENTITY> save(ENTITY entity, boolean allowTransactionActions);
+    Optional<ENTITY> save(ENTITY entity);
 
-    void delete(ENTITY entity, boolean allowTransactionActions);
+    boolean delete(ENTITY entity);
 
-    Optional<ENTITY> update(ENTITY entity, boolean allowTransactionActions);
+    Optional<ENTITY> update(ENTITY entity);
 
-    Optional<ENTITY> deleteById(PK id, boolean allowTransactionActions);
+    boolean deleteById(PK id);
 }

@@ -11,4 +11,6 @@ public interface CategoryFacade {
     Optional<CategoryDto> save(CategoryDto categoryDto);
 
     Optional<CategoryDto> findById(Long id);
+
+    boolean deleteById(Long id);
 }

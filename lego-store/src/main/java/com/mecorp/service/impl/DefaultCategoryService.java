@@ -20,11 +20,16 @@ public class DefaultCategoryService implements CategoryService {
 
     @Override
     public Optional<Category> save(Category category) {
-        return this.categoryRepository.save(category, true);
+        return this.categoryRepository.save(category);
     }
 
     @Override
     public Optional<Category> findById(Long id) {
-        return this.categoryRepository.findById(id, true);
+        return this.categoryRepository.findById(id);
+    }
+
+    @Override
+    public boolean deleteById(Long id) {
+        return this.categoryRepository.deleteById(id);
     }
 }
