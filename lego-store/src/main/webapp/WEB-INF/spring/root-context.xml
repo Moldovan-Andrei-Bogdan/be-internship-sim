@@ -19,16 +19,42 @@
 
     <mvc:annotation-driven/>
     <!--DTO-->
+    <bean id="categoryDto" class="com.mecorp.facade.dto.CategoryDto" />
 
     <!--ENTITY-->
+    <bean id="category" class="com.mecorp.model.Category" />
 
     <!--POPULATORS-->
+    <bean id="basicCategoryPopulator" class="com.mecorp.facade.populator.impl.BasicCategoryPopulator" />
+    <bean id="basicCategoryReversePopulator" class="com.mecorp.facade.populator.impl.BasicCategoryReversePopulator" />
 
     <!--CONVERTERS-->
+    <bean id="basicCategoryConverter" class="com.mecorp.facade.converter.Converter">
+        <constructor-arg name="targetClass" ref="categoryDto" />
+        <property name="populators">
+            <list>
+                <ref bean="basicCategoryPopulator" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="basicCategoryReverseConverter" class="com.mecorp.facade.converter.Converter">
+        <constructor-arg name="targetClass" ref="category" />
+        <property name="populators">
+            <list>
+                <ref bean="basicCategoryReversePopulator" />
+            </list>
+        </property>
+    </bean>
 
     <!--REPOSITORY-->
+    <bean id="defaultCategoryRepository" class="com.mecorp.repository.impl.DefaultCategoryRepository" />
 
     <!--SERVICE-->
+    <bean id="defaultCategoryService" class="com.mecorp.service.impl.DefaultCategoryService" />
+
+    <!--FACADE-->
+    <bean id="defaultCategoryFacade" class="com.mecorp.facade.impl.DefaultCategoryFacade" />
 
 
     <!-- DATABASE-->
