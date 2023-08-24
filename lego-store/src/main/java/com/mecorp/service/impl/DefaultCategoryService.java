@@ -32,4 +32,9 @@ public class DefaultCategoryService implements CategoryService {
     public boolean deleteById(Long id) {
         return this.categoryRepository.deleteById(id);
     }
+
+    @Override
+    public Optional<Category> update(Category category) {
+        return this.categoryRepository.update(category);
+    }
 }

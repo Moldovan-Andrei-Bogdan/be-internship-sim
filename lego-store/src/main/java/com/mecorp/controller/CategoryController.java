@@ -5,6 +5,7 @@ import com.mecorp.facade.CategoryFacade;
 import com.mecorp.facade.dto.CategoryDto;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,7 +35,7 @@ public class CategoryController {
     }
 
     @PostMapping("")
-    public CategoryDto save(@RequestBody CategoryDto categoryDto) {
+    public CategoryDto save(@Valid @RequestBody CategoryDto categoryDto) {
         Optional<CategoryDto> response = this.categoryFacade.save(categoryDto);
 
         if (response.isEmpty()) {
@@ -51,5 +52,16 @@ public class CategoryController {
         if (!isEntityDeleted) {
             throw new NotFoundException("No category with this id has been found");
         }
+    }
+
+    @PutMapping("{id}")
+    public CategoryDto update(@PathVariable Long id, @RequestBody CategoryDto categoryDto) {
+        Optional<CategoryDto> response = this.categoryFacade.update(id, categoryDto);
+
+        if (response.isEmpty()) {
+            throw new RuntimeException("No category with this id has been found");
+        }
+
+        return response.get();
     }
 }

@@ -51,7 +51,10 @@ public class DefaultAbstractRepository<ENTITY, PK extends Serializable> implemen
 
     @Override
     public Optional<ENTITY> update(ENTITY entity) {
-        return Optional.empty();
+        @SuppressWarnings("unchecked")
+        ENTITY updatedEntity = (ENTITY) this.getSession().merge(entity);
+
+        return Optional.of(updatedEntity);
     }
 
     @Override
