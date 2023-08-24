@@ -3,12 +3,14 @@ package com.mecorp.facade.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 public class CategoryDto {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @NotNull
+    @NotBlank
     private String name;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String description;

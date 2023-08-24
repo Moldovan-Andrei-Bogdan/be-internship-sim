@@ -6,9 +6,9 @@ import com.mecorp.facade.dto.CategoryDto;
 import com.mecorp.model.Category;
 import com.mecorp.service.CategoryService;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -52,5 +52,22 @@ public class DefaultCategoryFacade implements CategoryFacade {
     @Override
     public boolean deleteById(Long id) {
         return this.categoryService.deleteById(id);
+    }
+
+    @Override
+    public Optional<CategoryDto> update(Long id, CategoryDto categoryDto) {
+        Optional<Category> categoryOptional = this.categoryService.findById(id);
+
+        if (categoryOptional.isEmpty()) return Optional.empty();
+
+        categoryDto.setId(id);
+        String categoryDtoName = categoryDto.getName();
+
+        if (categoryDtoName == null || Objects.equals(categoryDtoName, "")) {
+            categoryDto.setName(categoryOptional.get().getName());
+        }
+
+        return this.categoryService.update(this.basicCategoryReverseConverter.convert(categoryDto))
+                .map(this.basicCategoryConverter::convert);
     }
 }

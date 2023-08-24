@@ -13,4 +13,6 @@ public interface CategoryFacade {
     Optional<CategoryDto> findById(Long id);
 
     boolean deleteById(Long id);
+
+    Optional<CategoryDto> update(Long id, CategoryDto categoryDto);
 }
