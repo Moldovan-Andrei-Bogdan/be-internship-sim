@@ -20,13 +20,25 @@
     <mvc:annotation-driven/>
     <!--DTO-->
     <bean id="categoryDto" class="com.mecorp.facade.dto.CategoryDto" />
+    <bean id="productDto" class="com.mecorp.facade.dto.ProductDto" />
 
     <!--ENTITY-->
     <bean id="category" class="com.mecorp.model.Category" />
+    <bean id="product" class="com.mecorp.model.Product" />
 
     <!--POPULATORS-->
     <bean id="basicCategoryPopulator" class="com.mecorp.facade.populator.impl.BasicCategoryPopulator" />
     <bean id="basicCategoryReversePopulator" class="com.mecorp.facade.populator.impl.BasicCategoryReversePopulator" />
+    <bean id="basicProductPopulator" class="com.mecorp.facade.populator.impl.BasicProductPopulator" />
+    <bean id="basicProductReversePopulator" class="com.mecorp.facade.populator.impl.BasicProductReversePopulator" />
+    <bean id="categoriesProductPopulator" class="com.mecorp.facade.populator.impl.CategoriesProductPopulator">
+        <property name="basicCategoryConverter" ref="basicCategoryConverter" />
+    </bean>
+    <bean id="categoriesProductReversePopulator" class="com.mecorp.facade.populator.impl.CategoriesProductReversePopulator">
+        <property name="categoryService" ref="defaultCategoryService" />
+    </bean>
+    <bean id="fullProductPopulator" class="com.mecorp.facade.populator.impl.FullProductPopulator" />
+    <bean id="fullProductReversePopulator" class="com.mecorp.facade.populator.impl.FullProductReversePopulator" />
 
     <!--CONVERTERS-->
     <bean id="basicCategoryConverter" class="com.mecorp.facade.converter.Converter">
@@ -47,14 +59,58 @@
         </property>
     </bean>
 
+    <bean id="basicProductConverter" class="com.mecorp.facade.converter.Converter">
+        <constructor-arg name="targetClass" ref="productDto" />
+        <property name="populators">
+            <list>
+                <ref bean="basicProductPopulator" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="basicProductReverseConverter" class="com.mecorp.facade.converter.Converter">
+        <constructor-arg name="targetClass" ref="product" />
+        <property name="populators">
+            <list>
+                <ref bean="basicProductReversePopulator" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="fullProductReverseConverter" class="com.mecorp.facade.converter.Converter">
+        <constructor-arg name="targetClass" ref="product" />
+        <property name="populators">
+            <list>
+                <ref bean="fullProductReversePopulator" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="fullProductWithCategoriesReverseConverter" class="com.mecorp.facade.converter.Converter">
+        <constructor-arg name="targetClass" ref="product" />
+        <property name="populators">
+            <list>
+                <ref bean="fullProductReversePopulator" />
+                <ref bean="categoriesProductReversePopulator" />
+            </list>
+        </property>
+    </bean>
+
     <!--REPOSITORY-->
     <bean id="defaultCategoryRepository" class="com.mecorp.repository.impl.DefaultCategoryRepository" />
+    <bean id="defaultProductRepository" class="com.mecorp.repository.impl.DefaultProductRepository" />
 
     <!--SERVICE-->
     <bean id="defaultCategoryService" class="com.mecorp.service.impl.DefaultCategoryService" />
+    <bean id="defaultProductService" class="com.mecorp.service.impl.DefaultProductService" />
 
     <!--FACADE-->
     <bean id="defaultCategoryFacade" class="com.mecorp.facade.impl.DefaultCategoryFacade" />
+    <bean id="defaultProductFacade" class="com.mecorp.facade.impl.DefaultProductFacade">
+        <property name="basicProductConverter" ref="basicProductConverter" />
+        <property name="fullProductReverseConverter" ref="fullProductReverseConverter" />
+        <property name="fullProductWithCategoriesReverseConverter" ref="fullProductWithCategoriesReverseConverter" />
+    </bean>
 
 
     <!-- DATABASE-->

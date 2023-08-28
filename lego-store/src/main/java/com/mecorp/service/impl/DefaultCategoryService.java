@@ -37,4 +37,9 @@ public class DefaultCategoryService implements CategoryService {
     public Optional<Category> update(Category category) {
         return this.categoryRepository.update(category);
     }
+
+    @Override
+    public List<Category> getCategoriesById(List<Long> categoryIds) {
+        return this.categoryRepository.getCategoriesById(categoryIds);
+    }
 }
