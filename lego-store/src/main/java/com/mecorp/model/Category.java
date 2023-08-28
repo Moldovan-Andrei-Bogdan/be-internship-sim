@@ -1,6 +1,7 @@
 package com.mecorp.model;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -15,6 +16,9 @@ public class Category {
 
     @Column(name = "description")
     private String description;
+
+    @ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY)
+    List<Product> products;
 
     public Category() {}
 
