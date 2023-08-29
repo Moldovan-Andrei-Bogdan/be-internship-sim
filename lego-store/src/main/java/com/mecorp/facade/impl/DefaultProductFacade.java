@@ -1,5 +1,6 @@
 package com.mecorp.facade.impl;
 
+import com.mecorp.enums.Fields;
 import com.mecorp.facade.ProductFacade;
 import com.mecorp.facade.converter.Converter;
 import com.mecorp.facade.dto.ProductDto;
@@ -8,6 +9,7 @@ import com.mecorp.model.Product;
 import com.mecorp.service.ProductService;
 import org.springframework.beans.factory.annotation.Qualifier;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,13 +25,22 @@ public class DefaultProductFacade implements ProductFacade {
     Converter<Product, ProductDto> fullProductWithCategoriesConverter;
     @Qualifier("fullProductWithCategoriesReverseConverter")
     Converter<ProductDto, Product> fullProductWithCategoriesReverseConverter;
+    @Qualifier("categoriesSimpleProductConverter")
+    Converter<Product, ProductDto> categoriesSimpleProductConverter;
 
     public DefaultProductFacade(ProductService productService) {
         this.productService = productService;
     }
     @Override
-    public List<ProductDto> findAll() {
-        return null;
+    @Transactional
+    public List<ProductDto> findAll(Fields productFields, boolean includeCategories) {
+        Converter<Product, ProductDto> converter = this.basicProductConverter;
+
+        if (productFields == Fields.SIMPLE && includeCategories) {
+            converter = this.categoriesSimpleProductConverter;
+        }
+
+        return converter.convertAll(this.productService.findAll());
     }
 
     @Override
@@ -103,5 +114,13 @@ public class DefaultProductFacade implements ProductFacade {
 
     public void setFullProductWithCategoriesReverseConverter(Converter<ProductDto, Product> fullProductWithCategoriesReverseConverter) {
         this.fullProductWithCategoriesReverseConverter = fullProductWithCategoriesReverseConverter;
+    }
+
+    public Converter<Product, ProductDto> getCategoriesSimpleProductConverter() {
+        return categoriesSimpleProductConverter;
+    }
+
+    public void setCategoriesSimpleProductConverter(Converter<Product, ProductDto> categoriesSimpleProductConverter) {
+        this.categoriesSimpleProductConverter = categoriesSimpleProductConverter;
     }
 }

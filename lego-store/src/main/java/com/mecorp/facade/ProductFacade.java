@@ -1,12 +1,13 @@
 package com.mecorp.facade;
 
+import com.mecorp.enums.Fields;
 import com.mecorp.facade.dto.ProductDto;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface ProductFacade {
-    List<ProductDto> findAll();
+    List<ProductDto> findAll(Fields productFields, boolean includeCategories);
 
     Optional<ProductDto> findById(Long id);
 
