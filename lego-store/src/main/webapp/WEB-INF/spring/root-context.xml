@@ -102,7 +102,7 @@
         </property>
     </bean>
 
-    <bean id="simpleProductConverter" class="com.mecorp.facade.converter.Converter">
+    <bean id="fullProductConverter" class="com.mecorp.facade.converter.Converter">
         <constructor-arg name="targetClass" ref="productDto" />
         <property name="populators">
             <list>
@@ -125,6 +125,16 @@
         </property>
     </bean>
 
+    <bean id="simpleProductConverter" class="com.mecorp.facade.converter.Converter">
+        <constructor-arg name="targetClass" ref="productDto" />
+        <property name="populators">
+            <list>
+                <ref bean="basicProductPopulator" />
+                <ref bean="descriptionProductPopulator" />
+            </list>
+        </property>
+    </bean>
+
     <!--REPOSITORY-->
     <bean id="defaultCategoryRepository" class="com.mecorp.repository.impl.DefaultCategoryRepository" />
     <bean id="defaultProductRepository" class="com.mecorp.repository.impl.DefaultProductRepository" />
@@ -140,6 +150,7 @@
         <property name="fullProductReverseConverter" ref="fullProductReverseConverter" />
         <property name="fullProductWithCategoriesReverseConverter" ref="fullProductWithCategoriesReverseConverter" />
         <property name="categoriesSimpleProductConverter" ref="categoriesSimpleProductConverter" />
+        <property name="simpleProductConverter" ref="simpleProductConverter" />
     </bean>
 
 

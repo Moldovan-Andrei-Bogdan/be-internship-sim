@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface ProductFacade {
     List<ProductDto> findAll(Fields productFields, boolean includeCategories);
 
-    Optional<ProductDto> findById(Long id);
+    Optional<ProductDto> findById(Long id, Fields productFields);
 
     Optional<ProductDto> save(ProductDto entity);
 
