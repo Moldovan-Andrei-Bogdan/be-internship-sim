@@ -17,16 +17,24 @@ public class DefaultProductFacade implements ProductFacade {
     private final ProductService productService;
     @Qualifier("basicProductConverter")
     Converter<Product, ProductDto> basicProductConverter;
+
     @Qualifier("basicProductReverseConverter")
     Converter<ProductDto, Product> basicProductReverseConverter;
+
     @Qualifier("fullProductReverseConverter")
     Converter<ProductDto, Product> fullProductReverseConverter;
+
     @Qualifier("fullProductWithCategoriesConverter")
     Converter<Product, ProductDto> fullProductWithCategoriesConverter;
+
     @Qualifier("fullProductWithCategoriesReverseConverter")
     Converter<ProductDto, Product> fullProductWithCategoriesReverseConverter;
+
     @Qualifier("categoriesSimpleProductConverter")
     Converter<Product, ProductDto> categoriesSimpleProductConverter;
+
+    @Qualifier("simpleProductConverter")
+    Converter<Product, ProductDto> simpleProductConverter;
 
     public DefaultProductFacade(ProductService productService) {
         this.productService = productService;
@@ -44,8 +52,14 @@ public class DefaultProductFacade implements ProductFacade {
     }
 
     @Override
-    public Optional<ProductDto> findById(Long id) {
-        return Optional.empty();
+    public Optional<ProductDto> findById(Long id, Fields productFields) {
+        Converter<Product, ProductDto> converter = this.basicProductConverter;
+
+        if (productFields == Fields.SIMPLE) {
+            converter = this.simpleProductConverter;
+        }
+
+        return this.productService.findById(id).map(converter::convert);
     }
 
     @Override
@@ -122,5 +136,13 @@ public class DefaultProductFacade implements ProductFacade {
 
     public void setCategoriesSimpleProductConverter(Converter<Product, ProductDto> categoriesSimpleProductConverter) {
         this.categoriesSimpleProductConverter = categoriesSimpleProductConverter;
+    }
+
+    public Converter<Product, ProductDto> getSimpleProductConverter() {
+        return simpleProductConverter;
+    }
+
+    public void setSimpleProductConverter(Converter<Product, ProductDto> simpleProductConverter) {
+        this.simpleProductConverter = simpleProductConverter;
     }
 }

@@ -1,6 +1,7 @@
 package com.mecorp.controller;
 
 import com.mecorp.enums.Fields;
+import com.mecorp.exception.NotFoundException;
 import com.mecorp.facade.ProductFacade;
 import com.mecorp.facade.dto.ProductDto;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +31,21 @@ public class ProductController {
     }
 
     @GetMapping("")
-    public List<ProductDto> findAll(@RequestParam(name = "fields") Fields productFields, @RequestParam(name = "include-categories") boolean includeCategories) {
+    public List<ProductDto> findAll(
+            @RequestParam(name = "fields", defaultValue = "BASIC") Fields productFields,
+            @RequestParam(name = "include-categories", defaultValue = "false") boolean includeCategories
+    ) {
         return this.productFacade.findAll(productFields, includeCategories);
+    }
+
+    @GetMapping("{id}")
+    public ProductDto findById(@PathVariable Long id, @RequestParam(name = "fields", defaultValue = "BASIC") Fields productFields) {
+        Optional<ProductDto> productDtoOptional = this.productFacade.findById(id, productFields);
+
+        if (productDtoOptional.isEmpty()) {
+            throw new NotFoundException("No product with this id has been found");
+        }
+
+        return productDtoOptional.get();
     }
 }
