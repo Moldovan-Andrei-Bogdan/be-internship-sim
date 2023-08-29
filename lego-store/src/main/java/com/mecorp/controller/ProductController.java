@@ -1,13 +1,12 @@
 package com.mecorp.controller;
 
+import com.mecorp.enums.Fields;
 import com.mecorp.facade.ProductFacade;
 import com.mecorp.facade.dto.ProductDto;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -28,5 +27,10 @@ public class ProductController {
         }
 
         return response.get();
+    }
+
+    @GetMapping("")
+    public List<ProductDto> findAll(@RequestParam(name = "fields") Fields productFields, @RequestParam(name = "include-categories") boolean includeCategories) {
+        return this.productFacade.findAll(productFields, includeCategories);
     }
 }

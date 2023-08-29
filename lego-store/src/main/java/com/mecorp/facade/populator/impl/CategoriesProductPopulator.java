@@ -6,7 +6,6 @@ import com.mecorp.facade.dto.ProductDto;
 import com.mecorp.facade.populator.Populator;
 import com.mecorp.model.Category;
 import com.mecorp.model.Product;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.util.List;
