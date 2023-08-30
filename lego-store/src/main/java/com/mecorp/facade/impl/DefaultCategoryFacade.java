@@ -7,6 +7,7 @@ import com.mecorp.model.Category;
 import com.mecorp.service.CategoryService;
 import org.springframework.beans.factory.annotation.Qualifier;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -50,6 +51,7 @@ public class DefaultCategoryFacade implements CategoryFacade {
     }
 
     @Override
+    @Transactional
     public boolean deleteById(Long id) {
         return this.categoryService.deleteById(id);
     }

@@ -1,6 +1,7 @@
 package com.mecorp.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -18,13 +19,23 @@ public class Category {
     private String description;
 
     @ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY)
-    List<Product> products;
+    List<Product> products = new ArrayList<>();
 
     public Category() {}
 
     public Category(String name, String description) {
         this.name = name;
         this.description = description;
+    }
+
+    public void addProduct(Product product) {
+        this.getProducts().add(product);
+        product.getCategories().add(this);
+    }
+
+    public void removeProduct(Product product) {
+//        this.getProducts().remove(product);
+        product.getCategories().remove(this);
     }
 
     public Long getId() {
@@ -49,6 +60,14 @@ public class Category {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 
     @Override

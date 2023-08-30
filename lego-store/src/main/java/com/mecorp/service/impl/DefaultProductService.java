@@ -40,6 +40,6 @@ public class DefaultProductService implements ProductService {
 
     @Override
     public boolean deleteById(Long id) {
-        return false;
+        return this.productRepository.deleteById(id);
     }
 }
