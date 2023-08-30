@@ -48,4 +48,13 @@ public class ProductController {
 
         return productDtoOptional.get();
     }
+
+    @DeleteMapping("{id}")
+    public void deleteById(@PathVariable Long id) {
+        boolean isEntityDeleted = this.productFacade.deleteById(id);
+
+        if (!isEntityDeleted) {
+            throw new NotFoundException("No product with this id has been found");
+        }
+    }
 }

@@ -87,7 +87,7 @@ public class DefaultProductFacade implements ProductFacade {
 
     @Override
     public boolean deleteById(Long id) {
-        return false;
+        return this.productService.deleteById(id);
     }
 
     public Converter<Product, ProductDto> getBasicProductConverter() {
