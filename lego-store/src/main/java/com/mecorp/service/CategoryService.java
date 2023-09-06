@@ -1,5 +1,7 @@
 package com.mecorp.service;
 
+import com.mecorp.exception.GeneralException;
+import com.mecorp.exception.NotFoundException;
 import com.mecorp.model.Category;
 
 import javax.swing.text.html.Option;
@@ -9,13 +11,13 @@ import java.util.Optional;
 public interface CategoryService {
     List<Category> findAll();
 
-    Optional<Category> save(Category category);
+    Category save(Category category) throws GeneralException;
 
-    Optional<Category> findById(Long id);
+    Category findById(Long id) throws NotFoundException;
 
-    boolean deleteById(Long id);
+    boolean deleteById(Long id) throws NotFoundException, GeneralException;
 
-    Optional<Category> update(Category category);
+    Category update(Category category) throws GeneralException;
 
     List<Category> getCategoriesById(List<Long> categoryIds);
 }

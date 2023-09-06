@@ -1,11 +1,12 @@
 package com.mecorp.service.impl;
 
+import com.mecorp.exception.GeneralException;
+import com.mecorp.exception.NotFoundException;
 import com.mecorp.model.Product;
 import com.mecorp.repository.ProductRepository;
 import com.mecorp.service.ProductService;
 
 import java.util.List;
-import java.util.Optional;
 
 public class DefaultProductService implements ProductService {
     private final ProductRepository productRepository;
@@ -19,13 +20,15 @@ public class DefaultProductService implements ProductService {
     }
 
     @Override
-    public Optional<Product> findById(Long id) {
-        return this.productRepository.findById(id);
+    public Product findById(Long id) throws NotFoundException {
+        return this.productRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Product not found"));
     }
 
     @Override
-    public Optional<Product> save(Product entity) {
-        return this.productRepository.save(entity);
+    public Product save(Product entity) throws GeneralException {
+        return this.productRepository.save(entity)
+                .orElseThrow(() -> new GeneralException("Could not save product"));
     }
 
     @Override
@@ -34,12 +37,17 @@ public class DefaultProductService implements ProductService {
     }
 
     @Override
-    public Optional<Product> update(Product entity) {
-        return Optional.empty();
+    public Product update(Product entity) throws GeneralException {
+        return this.productRepository.update(entity)
+                .orElseThrow(() -> new GeneralException("Could not update category"));
     }
 
     @Override
-    public boolean deleteById(Long id) {
-        return this.productRepository.deleteById(id);
+    public boolean deleteById(Long id) throws NotFoundException {
+        boolean isEntityDeleted = this.productRepository.deleteById(id);
+
+        if (!isEntityDeleted) throw new NotFoundException("Could not find such product");
+
+        return true;
     }
 }

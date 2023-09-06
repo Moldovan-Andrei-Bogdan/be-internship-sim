@@ -1,21 +1,22 @@
 package com.mecorp.facade;
 
 import com.mecorp.enums.Fields;
+import com.mecorp.exception.GeneralException;
+import com.mecorp.exception.NotFoundException;
 import com.mecorp.facade.dto.ProductDto;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface ProductFacade {
-    List<ProductDto> findAll(Fields productFields, boolean includeCategories);
+    List<ProductDto> findAll(Fields productFields);
 
-    Optional<ProductDto> findById(Long id, Fields productFields);
+    ProductDto findById(Long id, Fields productFields) throws NotFoundException;
 
-    Optional<ProductDto> save(ProductDto entity);
+    ProductDto save(ProductDto entity) throws GeneralException;
 
     boolean delete(ProductDto entity);
 
-    Optional<ProductDto> update(ProductDto entity);
+    ProductDto update(Long id, ProductDto entity) throws NotFoundException, GeneralException;
 
-    boolean deleteById(Long id);
+    boolean deleteById(Long id) throws NotFoundException;
 }
