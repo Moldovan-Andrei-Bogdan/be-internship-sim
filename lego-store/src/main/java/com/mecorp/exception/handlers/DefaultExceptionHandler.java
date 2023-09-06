@@ -1,5 +1,6 @@
 package com.mecorp.exception.handlers;
 
+import com.mecorp.exception.GeneralException;
 import com.mecorp.exception.HttpErrorModel;
 import com.mecorp.exception.NotFoundException;
 import org.springframework.http.HttpStatus;
@@ -21,7 +22,7 @@ public class DefaultExceptionHandler {
         return new ResponseEntity<>(httpErrorModel, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(value = Exception.class)
+    @ExceptionHandler(value = GeneralException.class)
     public ResponseEntity<HttpErrorModel> handleException(Exception exception) {
         HttpErrorModel httpErrorModel = new HttpErrorModel();
         httpErrorModel.setMessage(exception.getMessage());

@@ -1,5 +1,7 @@
 package com.mecorp.facade.impl;
 
+import com.mecorp.exception.GeneralException;
+import com.mecorp.exception.NotFoundException;
 import com.mecorp.facade.CategoryFacade;
 import com.mecorp.facade.converter.Converter;
 import com.mecorp.facade.dto.CategoryDto;
@@ -9,8 +11,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class DefaultCategoryFacade implements CategoryFacade {
@@ -40,36 +40,34 @@ public class DefaultCategoryFacade implements CategoryFacade {
     }
 
     @Override
-    public Optional<CategoryDto> save(CategoryDto categoryDto) {
-        return this.categoryService.save(this.basicCategoryReverseConverter.convert(categoryDto))
-                .map(this.basicCategoryConverter::convert);
+    public CategoryDto save(CategoryDto categoryDto) throws GeneralException {
+        Category category = this.basicCategoryReverseConverter.convert(categoryDto);
+        Category savedCategory = this.categoryService.save(category);
+
+        return this.basicCategoryConverter.convert(savedCategory);
     }
 
     @Override
-    public Optional<CategoryDto> findById(Long id) {
-        return this.categoryService.findById(id).map(this.basicCategoryConverter::convert);
+    public CategoryDto findById(Long id) throws NotFoundException {
+        Category category = this.categoryService.findById(id);
+
+        return this.basicCategoryConverter.convert(category);
     }
 
     @Override
     @Transactional
-    public boolean deleteById(Long id) {
+    public boolean deleteById(Long id) throws NotFoundException, GeneralException {
         return this.categoryService.deleteById(id);
     }
 
     @Override
-    public Optional<CategoryDto> update(Long id, CategoryDto categoryDto) {
-        Optional<Category> categoryOptional = this.categoryService.findById(id);
+    public CategoryDto update(Long id, CategoryDto categoryDto) throws NotFoundException, GeneralException {
+        Category category = this.categoryService.findById(id);
+        categoryDto.setId(category.getId());
 
-        if (categoryOptional.isEmpty()) return Optional.empty();
+        Category convertedCategory = this.basicCategoryReverseConverter.convert(categoryDto);
+        Category updatedCategory = this.categoryService.update(convertedCategory);
 
-        categoryDto.setId(id);
-        String categoryDtoName = categoryDto.getName();
-
-        if (categoryDtoName == null || Objects.equals(categoryDtoName, "")) {
-            categoryDto.setName(categoryOptional.get().getName());
-        }
-
-        return this.categoryService.update(this.basicCategoryReverseConverter.convert(categoryDto))
-                .map(this.basicCategoryConverter::convert);
+        return this.basicCategoryConverter.convert(updatedCategory);
     }
 }

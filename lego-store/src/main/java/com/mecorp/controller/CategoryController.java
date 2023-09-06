@@ -1,5 +1,6 @@
 package com.mecorp.controller;
 
+import com.mecorp.exception.GeneralException;
 import com.mecorp.exception.NotFoundException;
 import com.mecorp.facade.CategoryFacade;
 import com.mecorp.facade.dto.CategoryDto;
@@ -24,44 +25,22 @@ public class CategoryController {
     }
 
     @GetMapping("{id}")
-    public CategoryDto findById(@PathVariable Long id) {
-        Optional<CategoryDto> categoryDto = this.categoryFacade.findById(id);
-
-        if (categoryDto.isEmpty()) {
-            throw new NotFoundException("No category with this id has been found");
-        }
-
-        return categoryDto.get();
+    public CategoryDto findById(@PathVariable Long id) throws NotFoundException {
+        return this.categoryFacade.findById(id);
     }
 
     @PostMapping("")
-    public CategoryDto save(@Valid @RequestBody CategoryDto categoryDto) {
-        Optional<CategoryDto> response = this.categoryFacade.save(categoryDto);
-
-        if (response.isEmpty()) {
-            throw new RuntimeException("Invalid or incomplete data for a category");
-        }
-
-        return response.get();
+    public CategoryDto save(@Valid @RequestBody CategoryDto categoryDto) throws GeneralException {
+        return this.categoryFacade.save(categoryDto);
     }
 
     @DeleteMapping("{id}")
-    public void delete(@PathVariable Long id) {
-        boolean isEntityDeleted = this.categoryFacade.deleteById(id);
-
-        if (!isEntityDeleted) {
-            throw new NotFoundException("No category with this id has been found");
-        }
+    public void delete(@PathVariable Long id) throws NotFoundException, GeneralException {
+        this.categoryFacade.deleteById(id);
     }
 
     @PutMapping("{id}")
-    public CategoryDto update(@PathVariable Long id, @RequestBody CategoryDto categoryDto) {
-        Optional<CategoryDto> response = this.categoryFacade.update(id, categoryDto);
-
-        if (response.isEmpty()) {
-            throw new RuntimeException("No category with this id has been found");
-        }
-
-        return response.get();
+    public CategoryDto update(@PathVariable Long id, @Valid @RequestBody CategoryDto categoryDto) throws NotFoundException, GeneralException{
+        return this.categoryFacade.update(id, categoryDto);
     }
 }
