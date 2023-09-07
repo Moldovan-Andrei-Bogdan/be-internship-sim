@@ -5,6 +5,8 @@ import com.mecorp.exception.GeneralException;
 import com.mecorp.exception.NotFoundException;
 import com.mecorp.facade.ProductFacade;
 import com.mecorp.facade.converter.Converter;
+import com.mecorp.facade.dto.PageRequest;
+import com.mecorp.facade.dto.PageResponse;
 import com.mecorp.facade.dto.ProductDto;
 import com.mecorp.model.Category;
 import com.mecorp.model.Product;
@@ -12,6 +14,7 @@ import com.mecorp.service.CategoryService;
 import com.mecorp.service.ProductService;
 import org.springframework.beans.factory.annotation.Qualifier;
 
+import javax.persistence.Convert;
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -36,6 +39,10 @@ public class DefaultProductFacade implements ProductFacade {
     Converter<Product, ProductDto> fullProductConverter;
     @Qualifier("fullProductReverseConverter")
     Converter<ProductDto, Product> fullProductReverseConverter;
+
+    /// PAGE REQUEST
+    @Qualifier("productsPageResponseConverter")
+    Converter<PageResponse<Product>, PageResponse<ProductDto>> productsPageResponseConverter;
 
     public DefaultProductFacade(ProductService productService, CategoryService categoryService) {
         this.productService = productService;
@@ -122,6 +129,13 @@ public class DefaultProductFacade implements ProductFacade {
         return this.productService.deleteById(id);
     }
 
+    @Override
+    public PageResponse<ProductDto> findAllInStock(PageRequest pageRequest) {
+        PageResponse<Product> pageResponse = this.productService.findAllInStock(pageRequest);
+
+        return this.productsPageResponseConverter.convert(pageResponse);
+    }
+
     public Converter<Product, ProductDto> getBasicProductConverter() {
         return basicProductConverter;
     }
@@ -168,5 +182,13 @@ public class DefaultProductFacade implements ProductFacade {
 
     public void setFullProductReverseConverter(Converter<ProductDto, Product> fullProductReverseConverter) {
         this.fullProductReverseConverter = fullProductReverseConverter;
+    }
+
+    public Converter<PageResponse<Product>, PageResponse<ProductDto>> getProductsPageResponseConverter() {
+        return productsPageResponseConverter;
+    }
+
+    public void setProductsPageResponseConverter(Converter<PageResponse<Product>, PageResponse<ProductDto>> productsPageResponseConverter) {
+        this.productsPageResponseConverter = productsPageResponseConverter;
     }
 }

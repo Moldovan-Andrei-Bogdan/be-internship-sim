@@ -2,6 +2,8 @@ package com.mecorp.service.impl;
 
 import com.mecorp.exception.GeneralException;
 import com.mecorp.exception.NotFoundException;
+import com.mecorp.facade.dto.PageRequest;
+import com.mecorp.facade.dto.PageResponse;
 import com.mecorp.model.Product;
 import com.mecorp.repository.ProductRepository;
 import com.mecorp.service.ProductService;
@@ -49,5 +51,16 @@ public class DefaultProductService implements ProductService {
         if (!isEntityDeleted) throw new NotFoundException("Could not find such product");
 
         return true;
+    }
+
+    @Override
+    public PageResponse<Product> findAllInStock(PageRequest pageRequest) {
+        PageResponse<Product> pageResponse = new PageResponse<>();
+
+        List<Product> products = this.productRepository.findAllInStock(pageRequest);
+
+        pageResponse.setResultList(products);
+
+        return pageResponse;
     }
 }

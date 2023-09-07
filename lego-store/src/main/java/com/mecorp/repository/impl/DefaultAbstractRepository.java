@@ -14,7 +14,7 @@ import java.util.Optional;
 @Transactional
 public class DefaultAbstractRepository<ENTITY, PK extends Serializable> implements AbstractRepository<ENTITY, PK> {
 
-    private final Class<ENTITY> persistentClass;
+    protected final Class<ENTITY> persistentClass;
 
     private final SessionFactory sessionFactory;
 
