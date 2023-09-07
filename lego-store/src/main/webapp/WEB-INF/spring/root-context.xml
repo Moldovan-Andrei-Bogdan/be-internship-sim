@@ -21,6 +21,7 @@
     <!--DTO-->
     <bean id="categoryDto" class="com.mecorp.facade.dto.CategoryDto" />
     <bean id="productDto" class="com.mecorp.facade.dto.ProductDto" />
+    <bean id="pageResponse" class="com.mecorp.facade.dto.PageResponse" />
 
     <!--ENTITY-->
     <bean id="category" class="com.mecorp.model.Category" />
@@ -41,6 +42,9 @@
     <bean id="stockProductPopulator" class="com.mecorp.facade.populator.impl.StockProductPopulator" />
     <bean id="descriptionProductReversePopulator" class="com.mecorp.facade.populator.impl.DescriptionProductReversePopulator" />
     <bean id="stockProductReversePopulator" class="com.mecorp.facade.populator.impl.StockProductReversePopulator" />
+    <bean id="productsPageResponsePopulator" class="com.mecorp.facade.populator.impl.ProductsPageResponsePopulator">
+        <property name="basicProductConverter" ref="basicProductConverter" />
+    </bean>
 
     <!--CONVERTERS-->
     <bean id="basicCategoryConverter" class="com.mecorp.facade.converter.Converter">
@@ -112,6 +116,15 @@
         </property>
     </bean>
 
+    <bean id="productsPageResponseConverter" class="com.mecorp.facade.converter.Converter">
+        <constructor-arg name="targetClass" ref="pageResponse" />
+        <property name="populators">
+            <list>
+                <ref bean="productsPageResponsePopulator" />
+            </list>
+        </property>
+    </bean>
+
     <!--REPOSITORY-->
     <bean id="defaultCategoryRepository" class="com.mecorp.repository.impl.DefaultCategoryRepository" />
     <bean id="defaultProductRepository" class="com.mecorp.repository.impl.DefaultProductRepository" />
@@ -127,6 +140,7 @@
         <property name="fullProductConverter" ref="fullProductConverter" />
         <property name="fullProductReverseConverter" ref="fullProductReverseConverter" />
         <property name="simpleProductConverter" ref="simpleProductConverter" />
+        <property name="productsPageResponseConverter" ref="productsPageResponseConverter" />
     </bean>
 
 

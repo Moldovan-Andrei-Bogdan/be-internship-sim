@@ -3,6 +3,8 @@ package com.mecorp.facade;
 import com.mecorp.enums.Fields;
 import com.mecorp.exception.GeneralException;
 import com.mecorp.exception.NotFoundException;
+import com.mecorp.facade.dto.PageRequest;
+import com.mecorp.facade.dto.PageResponse;
 import com.mecorp.facade.dto.ProductDto;
 
 import java.util.List;
@@ -19,4 +21,6 @@ public interface ProductFacade {
     ProductDto update(Long id, ProductDto entity) throws NotFoundException, GeneralException;
 
     boolean deleteById(Long id) throws NotFoundException;
+
+    PageResponse<ProductDto> findAllInStock(PageRequest pageRequest);
 }

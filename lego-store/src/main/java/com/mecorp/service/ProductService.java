@@ -2,6 +2,8 @@ package com.mecorp.service;
 
 import com.mecorp.exception.GeneralException;
 import com.mecorp.exception.NotFoundException;
+import com.mecorp.facade.dto.PageRequest;
+import com.mecorp.facade.dto.PageResponse;
 import com.mecorp.model.Product;
 
 import java.util.List;
@@ -19,4 +21,6 @@ public interface ProductService {
     Product update(Product entity) throws GeneralException;
 
     boolean deleteById(Long id) throws NotFoundException;
+
+    PageResponse<Product> findAllInStock(PageRequest pageRequest);
 }

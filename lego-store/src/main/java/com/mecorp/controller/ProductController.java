@@ -1,9 +1,12 @@
 package com.mecorp.controller;
 
 import com.mecorp.enums.Fields;
+import com.mecorp.enums.SortType;
 import com.mecorp.exception.GeneralException;
 import com.mecorp.exception.NotFoundException;
 import com.mecorp.facade.ProductFacade;
+import com.mecorp.facade.dto.PageRequest;
+import com.mecorp.facade.dto.PageResponse;
 import com.mecorp.facade.dto.ProductDto;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,10 +27,20 @@ public class ProductController {
         return this.productFacade.save(productDto);
     }
 
+//    @GetMapping("")
+//    public List<ProductDto> findAll(@RequestParam(name = "fields", defaultValue = "BASIC") Fields productFields
+//    ) {
+//        return this.productFacade.findAll(productFields);
+//    }
+
     @GetMapping("")
-    public List<ProductDto> findAll(@RequestParam(name = "fields", defaultValue = "BASIC") Fields productFields
+    public PageResponse<ProductDto> findAllInStock(
+            @RequestParam(name = "sort", defaultValue = "PRICE_ASC") String sortType
     ) {
-        return this.productFacade.findAll(productFields);
+        PageRequest pageRequest = new PageRequest();
+        pageRequest.setSortType(SortType.getOrDefault(sortType, SortType.PRICE_ASC));
+
+        return this.productFacade.findAllInStock(pageRequest);
     }
 
     @GetMapping("{id}")
