@@ -18,6 +18,10 @@ public class ProductsPageResponsePopulator implements Populator<PageResponse<Pro
         List<ProductDto> convertedProducts = this.basicProductConverter.convertAll(products);
 
         productDtoPageResponse.setResultList(convertedProducts);
+        productDtoPageResponse.setNrOfElemsOnPage(productPageResponse.getNrOfElemsOnPage());
+        productDtoPageResponse.setNrOfTotalProducts(productPageResponse.getNrOfTotalProducts());
+        productDtoPageResponse.setNrOfPages(productPageResponse.getNrOfPages());
+        productDtoPageResponse.setFirstElem(productPageResponse.getFirstElem());
     }
 
     public Converter<Product, ProductDto> getBasicProductConverter() {

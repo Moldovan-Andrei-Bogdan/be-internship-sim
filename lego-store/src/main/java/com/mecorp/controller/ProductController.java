@@ -35,10 +35,14 @@ public class ProductController {
 
     @GetMapping("")
     public PageResponse<ProductDto> findAllInStock(
-            @RequestParam(name = "sort", defaultValue = "PRICE_ASC") String sortType
+            @RequestParam(name = "sort", defaultValue = "PRICE_ASC") String sortType,
+            @RequestParam(name = "page", defaultValue = "1") Integer page,
+            @RequestParam(name = "page-size", defaultValue = "1") Integer pageSize
     ) {
         PageRequest pageRequest = new PageRequest();
         pageRequest.setSortType(SortType.getOrDefault(sortType, SortType.PRICE_ASC));
+        pageRequest.setPageNumber(page);
+        pageRequest.setPageSize(pageSize);
 
         return this.productFacade.findAllInStock(pageRequest);
     }
