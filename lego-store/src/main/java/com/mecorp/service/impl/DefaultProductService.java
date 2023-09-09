@@ -56,10 +56,19 @@ public class DefaultProductService implements ProductService {
     @Override
     public PageResponse<Product> findAllInStock(PageRequest pageRequest) {
         PageResponse<Product> pageResponse = new PageResponse<>();
+        Integer pageSize = pageRequest.getPageSize();
+        Integer currentPage = pageRequest.getPageNumber();
+        Integer firstElement = (currentPage - 1) * pageSize + 1;
 
         List<Product> products = this.productRepository.findAllInStock(pageRequest);
+        Integer countInStock = this.productRepository.getCountInStock(pageRequest);
+        Integer numberOfPages = (countInStock + pageSize - 1) / pageSize;
 
         pageResponse.setResultList(products);
+        pageResponse.setNrOfTotalProducts(countInStock);
+        pageResponse.setNrOfElemsOnPage(pageSize);
+        pageResponse.setNrOfPages(numberOfPages);
+        pageResponse.setFirstElem(firstElement);
 
         return pageResponse;
     }

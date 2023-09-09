@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface ProductRepository extends AbstractRepository<Product, Long> {
     List<Product> findAllInStock(PageRequest pageRequest);
+
+    Integer getCountInStock(PageRequest pageRequest);
 }
