@@ -9,6 +9,7 @@ import com.mecorp.repository.ProductRepository;
 import com.mecorp.service.ProductService;
 
 import java.util.List;
+import java.util.Set;
 
 public class DefaultProductService implements ProductService {
     private final ProductRepository productRepository;
@@ -63,12 +64,14 @@ public class DefaultProductService implements ProductService {
         List<Product> products = this.productRepository.findAllInStock(pageRequest);
         Integer countInStock = this.productRepository.getCountInStock(pageRequest);
         Integer numberOfPages = (countInStock + pageSize - 1) / pageSize;
+        Set<String> availableCategories = this.productRepository.getAvailableCategories();
 
         pageResponse.setResultList(products);
         pageResponse.setNrOfTotalProducts(countInStock);
         pageResponse.setNrOfElemsOnPage(pageSize);
         pageResponse.setNrOfPages(numberOfPages);
         pageResponse.setFirstElem(firstElement);
+        pageResponse.setCategoryNames(availableCategories);
 
         return pageResponse;
     }

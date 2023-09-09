@@ -2,6 +2,9 @@ package com.mecorp.facade.dto;
 
 import com.mecorp.enums.SortType;
 
+import java.util.List;
+import java.util.Set;
+
 public class PageRequest {
     private SortType sortType;
 
@@ -9,15 +12,7 @@ public class PageRequest {
 
     private Integer pageSize;
 
-    public PageRequest(
-            SortType sortType,
-            Integer pageNumber,
-            Integer pageSize
-    ) {
-        this.sortType = sortType;
-        this.pageNumber = pageNumber;
-        this.pageSize = pageSize;
-    }
+    private Set<String> categoryNames;
 
     public PageRequest() {}
 
@@ -43,5 +38,13 @@ public class PageRequest {
 
     public void setPageSize(Integer pageSize) {
         this.pageSize = pageSize;
+    }
+
+    public Set<String> getCategoryNames() {
+        return categoryNames;
+    }
+
+    public void setCategoryNames(Set<String> categoryNames) {
+        this.categoryNames = categoryNames;
     }
 }
