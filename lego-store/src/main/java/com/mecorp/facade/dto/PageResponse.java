@@ -13,6 +13,7 @@ public class PageResponse<Entity> {
     private Integer nrOfElemsOnPage;
     private List<Entity> resultList;
     private Set<String> categoryNames;
+    private List<PriceRange> priceRanges;
 
     public Integer getNrOfPages() {
         return nrOfPages;
@@ -60,5 +61,13 @@ public class PageResponse<Entity> {
 
     public void setCategoryNames(Set<String> categoryNames) {
         this.categoryNames = categoryNames;
+    }
+
+    public List<PriceRange> getPriceRanges() {
+        return priceRanges;
+    }
+
+    public void setPriceRanges(List<PriceRange> priceRanges) {
+        this.priceRanges = priceRanges;
     }
 }

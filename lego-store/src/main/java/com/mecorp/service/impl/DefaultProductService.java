@@ -1,13 +1,16 @@
 package com.mecorp.service.impl;
 
+import com.mecorp.enums.PriceRangeType;
 import com.mecorp.exception.GeneralException;
 import com.mecorp.exception.NotFoundException;
 import com.mecorp.facade.dto.PageRequest;
 import com.mecorp.facade.dto.PageResponse;
+import com.mecorp.facade.dto.PriceRange;
 import com.mecorp.model.Product;
 import com.mecorp.repository.ProductRepository;
 import com.mecorp.service.ProductService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -60,11 +63,14 @@ public class DefaultProductService implements ProductService {
         Integer pageSize = pageRequest.getPageSize();
         Integer currentPage = pageRequest.getPageNumber();
         Integer firstElement = (currentPage - 1) * pageSize + 1;
+        Double minPrice = pageRequest.getMinPrice();
+        Double maxPrice = pageRequest.getMaxPrice();
+        Set<String> categoryNames = pageRequest.getCategoryNames();
 
         List<Product> products = this.productRepository.findAllInStock(pageRequest);
         Integer countInStock = this.productRepository.getCountInStock(pageRequest);
         Integer numberOfPages = (countInStock + pageSize - 1) / pageSize;
-        Set<String> availableCategories = this.productRepository.getAvailableCategories();
+        Set<String> availableCategories = this.productRepository.getCategoriesByPriceRange(minPrice, maxPrice);
 
         pageResponse.setResultList(products);
         pageResponse.setNrOfTotalProducts(countInStock);
@@ -72,7 +78,21 @@ public class DefaultProductService implements ProductService {
         pageResponse.setNrOfPages(numberOfPages);
         pageResponse.setFirstElem(firstElement);
         pageResponse.setCategoryNames(availableCategories);
+        pageResponse.setPriceRanges(this.computePriceRanges(categoryNames));
 
         return pageResponse;
+    }
+
+    private List<PriceRange> computePriceRanges(Set<String> categories) {
+        List<PriceRange> priceRanges = new ArrayList<PriceRange>();
+
+        for (PriceRangeType priceRangeType : PriceRangeType.values()) {
+            if (this.productRepository.isPriceRangeAvailable(categories, priceRangeType)) {
+                PriceRange priceRange = new PriceRange(priceRangeType.name, priceRangeType.minValue, priceRangeType.maxValue);
+                priceRanges.add(priceRange);
+            }
+        }
+
+        return priceRanges;
     }
 }

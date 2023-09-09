@@ -14,6 +14,10 @@ public class PageRequest {
 
     private Set<String> categoryNames;
 
+    private Double minPrice;
+
+    private Double maxPrice;
+
     public PageRequest() {}
 
     public SortType getSortType() {
@@ -46,5 +50,21 @@ public class PageRequest {
 
     public void setCategoryNames(Set<String> categoryNames) {
         this.categoryNames = categoryNames;
+    }
+
+    public Double getMinPrice() {
+        return minPrice;
+    }
+
+    public void setMinPrice(Double minPrice) {
+        this.minPrice = minPrice;
+    }
+
+    public Double getMaxPrice() {
+        return maxPrice;
+    }
+
+    public void setMaxPrice(Double maxPrice) {
+        this.maxPrice = maxPrice;
     }
 }
