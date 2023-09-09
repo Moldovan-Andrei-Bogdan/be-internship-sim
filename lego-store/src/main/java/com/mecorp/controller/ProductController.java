@@ -39,6 +39,8 @@ public class ProductController {
             @RequestParam(name = "sort", defaultValue = "PRICE_ASC") String sortType,
             @RequestParam(name = "page", defaultValue = "1") Integer page,
             @RequestParam(name = "page-size", defaultValue = "1") Integer pageSize,
+            @RequestParam(name = "min-price", defaultValue = "0") Double minPrice,
+            @RequestParam(name = "max-price", defaultValue = "9999999") Double maxPrice,
             @RequestParam(name = "categories", required = false) Set<String> categories
     ) {
         PageRequest pageRequest = new PageRequest();
@@ -46,6 +48,8 @@ public class ProductController {
         pageRequest.setPageNumber(page);
         pageRequest.setPageSize(pageSize);
         pageRequest.setCategoryNames(categories);
+        pageRequest.setMinPrice(minPrice);
+        pageRequest.setMaxPrice(maxPrice);
 
         return this.productFacade.findAllInStock(pageRequest);
     }

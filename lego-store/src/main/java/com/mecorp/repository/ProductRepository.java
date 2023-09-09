@@ -1,5 +1,6 @@
 package com.mecorp.repository;
 
+import com.mecorp.enums.PriceRangeType;
 import com.mecorp.facade.dto.PageRequest;
 import com.mecorp.model.Product;
 
@@ -11,5 +12,7 @@ public interface ProductRepository extends AbstractRepository<Product, Long> {
 
     Integer getCountInStock(PageRequest pageRequest);
 
-    Set<String> getAvailableCategories();
+    Set<String> getCategoriesByPriceRange(Double minValue, Double maxValue);
+
+    boolean isPriceRangeAvailable(Set<String> categories, PriceRangeType priceRangeType);
 }
