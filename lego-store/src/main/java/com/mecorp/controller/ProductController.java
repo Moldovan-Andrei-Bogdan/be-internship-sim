@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/products")
@@ -37,12 +38,14 @@ public class ProductController {
     public PageResponse<ProductDto> findAllInStock(
             @RequestParam(name = "sort", defaultValue = "PRICE_ASC") String sortType,
             @RequestParam(name = "page", defaultValue = "1") Integer page,
-            @RequestParam(name = "page-size", defaultValue = "1") Integer pageSize
+            @RequestParam(name = "page-size", defaultValue = "1") Integer pageSize,
+            @RequestParam(name = "categories", required = false) Set<String> categories
     ) {
         PageRequest pageRequest = new PageRequest();
         pageRequest.setSortType(SortType.getOrDefault(sortType, SortType.PRICE_ASC));
         pageRequest.setPageNumber(page);
         pageRequest.setPageSize(pageSize);
+        pageRequest.setCategoryNames(categories);
 
         return this.productFacade.findAllInStock(pageRequest);
     }

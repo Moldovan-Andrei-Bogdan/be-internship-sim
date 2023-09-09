@@ -22,6 +22,7 @@ public class ProductsPageResponsePopulator implements Populator<PageResponse<Pro
         productDtoPageResponse.setNrOfTotalProducts(productPageResponse.getNrOfTotalProducts());
         productDtoPageResponse.setNrOfPages(productPageResponse.getNrOfPages());
         productDtoPageResponse.setFirstElem(productPageResponse.getFirstElem());
+        productDtoPageResponse.setCategoryNames(productPageResponse.getCategoryNames());
     }
 
     public Converter<Product, ProductDto> getBasicProductConverter() {
