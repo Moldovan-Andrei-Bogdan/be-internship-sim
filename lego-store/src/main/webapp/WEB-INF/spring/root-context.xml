@@ -128,10 +128,12 @@
     <!--REPOSITORY-->
     <bean id="defaultCategoryRepository" class="com.mecorp.repository.impl.DefaultCategoryRepository" />
     <bean id="defaultProductRepository" class="com.mecorp.repository.impl.DefaultProductRepository" />
+    <bean id="defaultUserEntityRepository" class="com.mecorp.repository.impl.DefaultUserEntityRepository" />
 
     <!--SERVICE-->
     <bean id="defaultCategoryService" class="com.mecorp.service.impl.DefaultCategoryService" />
     <bean id="defaultProductService" class="com.mecorp.service.impl.DefaultProductService" />
+    <bean id="defaultUserEntityService" class="com.mecorp.service.impl.DefaultUserEntityService" />
 
     <!--FACADE-->
     <bean id="defaultCategoryFacade" class="com.mecorp.facade.impl.DefaultCategoryFacade" />
@@ -142,6 +144,21 @@
         <property name="simpleProductConverter" ref="simpleProductConverter" />
         <property name="productsPageResponseConverter" ref="productsPageResponseConverter" />
     </bean>
+    <bean id="defaultUserEntityFacade" class="com.mecorp.facade.impl.DefaultUserEntityFacade" />
+
+    <!-- Spring Security Components Beans -->
+    <bean id="bCryptPasswordEncoder"
+                class="org.springframework.security.crypto.password.NoOpPasswordEncoder" />
+
+    <bean id="defaultUserDetailsService"
+          class="com.mecorp.security.components.DefaultUserDetailsService" />
+
+    <bean id="defaultAuthenticationProvider"
+          class="com.mecorp.security.components.DefaultAuthenticationProvider" />
+
+    <bean id="defaultJwtTokenUtil" class="com.mecorp.utils.JwtTokenUtil" />
+
+    <bean id="defaultJwtTokenFilter" class="com.mecorp.security.components.JwtTokenFilter" />
 
 
     <!-- DATABASE-->
