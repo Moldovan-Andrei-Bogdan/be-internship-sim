@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/products")
 public class ProductController {
     private final ProductFacade productFacade;
 
@@ -23,18 +22,28 @@ public class ProductController {
         this.productFacade = productFacade;
     }
 
-    @PostMapping("")
+    @PostMapping("/backoffice/products")
     public ProductDto save(@Valid @RequestBody ProductDto productDto) throws GeneralException {
         return this.productFacade.save(productDto);
     }
 
-//    @GetMapping("")
-//    public List<ProductDto> findAll(@RequestParam(name = "fields", defaultValue = "BASIC") Fields productFields
-//    ) {
-//        return this.productFacade.findAll(productFields);
-//    }
+    @GetMapping("/backoffice/products")
+    public List<ProductDto> findAll(@RequestParam(name = "fields", defaultValue = "BASIC") Fields productFields
+    ) {
+        return this.productFacade.findAll(productFields);
+    }
 
-    @GetMapping("")
+    @DeleteMapping("/backoffice/products/{id}")
+    public void deleteById(@PathVariable Long id) throws NotFoundException {
+        this.productFacade.deleteById(id);
+    }
+
+    @PutMapping("/backoffice/products/{id}")
+    public ProductDto update(@PathVariable Long id, @Valid @RequestBody ProductDto productDto) throws NotFoundException, GeneralException {
+        return this.productFacade.update(id, productDto);
+    }
+
+    @GetMapping("/products")
     public PageResponse<ProductDto> findAllInStock(
             @RequestParam(name = "sort", defaultValue = "PRICE_ASC") String sortType,
             @RequestParam(name = "page", defaultValue = "1") Integer page,
@@ -54,21 +63,11 @@ public class ProductController {
         return this.productFacade.findAllInStock(pageRequest);
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/products/{id}")
     public ProductDto findById(
             @PathVariable Long id,
             @RequestParam(name = "fields", defaultValue = "BASIC") Fields productFields
     ) throws NotFoundException {
         return this.productFacade.findById(id, productFields);
-    }
-
-    @DeleteMapping("{id}")
-    public void deleteById(@PathVariable Long id) throws NotFoundException {
-        this.productFacade.deleteById(id);
-    }
-
-    @PutMapping("{id}")
-    public ProductDto update(@PathVariable Long id, @Valid @RequestBody ProductDto productDto) throws NotFoundException, GeneralException {
-        return this.productFacade.update(id, productDto);
     }
 }

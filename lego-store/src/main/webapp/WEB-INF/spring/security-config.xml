@@ -11,7 +11,8 @@ http://www.springframework.org/schema/security/spring-security.xsd">
         <custom-filter before="BASIC_AUTH_FILTER" ref="defaultJwtTokenFilter" />
         <intercept-url pattern="/users/login" access="isAuthenticated()" />
         <intercept-url pattern="/users/logout" access="isAuthenticated()" />
-        <intercept-url pattern="/products/**" access="hasRole('USER')" />
+        <intercept-url pattern="/backoffice/**" access="hasRole('ADMIN')" />
+        <intercept-url pattern="/**" access="permitAll()" />
         <http-basic />
         <csrf disabled="true"/>
     </http>
